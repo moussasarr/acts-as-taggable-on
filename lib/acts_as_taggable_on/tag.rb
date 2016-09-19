@@ -1,7 +1,10 @@
 # encoding: utf-8
 module ActsAsTaggableOn
   class Tag < ::ActiveRecord::Base
-    before_create :set_user_id, :use_lower_case
+    before_create {
+     self.user_id = current_user.id
+     self.name = self.name.downcase!
+    }
 
     ### ASSOCIATIONS:
 
