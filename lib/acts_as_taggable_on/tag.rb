@@ -1,6 +1,7 @@
 # encoding: utf-8
 module ActsAsTaggableOn
   class Tag < ::ActiveRecord::Base
+    before_create :set_user_id, :use_lower_case
 
     ### ASSOCIATIONS:
 
@@ -104,6 +105,14 @@ module ActsAsTaggableOn
 
 
       private
+
+      def set_user_id
+        self.user_id = current_user.id
+      end
+
+      def use_lower_case
+        self.name = self.name.downcase!
+      end
 
       def comparable_name(str)
         if ActsAsTaggableOn.strict_case_match
